@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -24,6 +25,13 @@ public class HelloWorldController {
     public String greet(Model model){
         model.addAttribute("students", this.getStudents());
         return "welcome";
+    }
+
+    @GetMapping(path = "/modelandview")
+    public ModelAndView greet(){
+        ModelAndView modelAndView = new ModelAndView("welcome");
+        modelAndView.addObject("students", this.getStudents());
+        return modelAndView;
     }
 
 }
