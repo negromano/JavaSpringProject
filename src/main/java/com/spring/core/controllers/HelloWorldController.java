@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
@@ -31,6 +32,13 @@ public class HelloWorldController {
     public ModelAndView greet(){
         ModelAndView modelAndView = new ModelAndView("welcome");
         modelAndView.addObject("students", this.getStudents());
+        return modelAndView;
+    }
+
+    @GetMapping(path="/path")
+    public ModelAndView testParameters(@RequestParam(required = false, defaultValue = "Juan") String name){
+        ModelAndView modelAndView = new ModelAndView("post");
+        modelAndView.addObject("student", new Student(name, "123"));
         return modelAndView;
     }
 
