@@ -14,7 +14,7 @@ import java.util.TreeMap;
 
 
 @Controller
-@RequestMapping("/hello")
+@RequestMapping("/hello") //Parent route to access controller
 public class HelloWorldController {
 
     public Map<String, Student> getStudents(){
@@ -23,27 +23,46 @@ public class HelloWorldController {
         return students;
     }
 
+    /**
+     * Hello world using the map created before
+     * @param model model to be sent to the template
+     * @return html template to be rendered
+     */
     @GetMapping(path="/world")
     public String greet(Model model){
         model.addAttribute("students", this.getStudents());
         return "welcome";
     }
 
+    /**
+     *  Different approach to rendering templates, returning the View and the Model instead of the template's name
+     * @return ModelAndView containing the template to be rendered and the model that it uses
+     */
     @GetMapping(path = "/modelandview")
     public ModelAndView greet(){
-        ModelAndView modelAndView = new ModelAndView("welcome");
-        modelAndView.addObject("students", this.getStudents());
+        ModelAndView modelAndView = new ModelAndView("welcome"); //name of the template
+        modelAndView.addObject("students", this.getStudents()); //model to be used in the template
         return modelAndView;
     }
 
+    /**
+     *  Method to send parameters in the url to the template
+     * @param name parameter in the query
+     * @return ModelandView containing the new Student and the name of the template
+     */
     @GetMapping(path="/path")
     public ModelAndView testParameters(@RequestParam(required = false, defaultValue = "Juan") String name){
         ModelAndView modelAndView = new ModelAndView("post");
-        modelAndView.addObject("student", new Student(name, "123"));
+        modelAndView.addObject("student", new Student(name, "123")); //gets name from query
         return modelAndView;
     }
 
-    @GetMapping(path="/route/{name}")
+    /**
+     * Using routes instead of queries to send parameters
+     * @param name name sent via route instead of query
+     * @return ModelAndView similar to method used before but now gets the parameter from route
+     */
+    @GetMapping(path="/route/{name}") //Route to access method
     public ModelAndView testParametersWithRoute(@PathVariable(name = "name") String name){
         ModelAndView modelAndView = new ModelAndView("post");
         modelAndView.addObject("student", new Student(name, "123"));
